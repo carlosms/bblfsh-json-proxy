@@ -1,0 +1,35 @@
+language: go
+
+go: 1.11.x
+
+# Some default values, these can be skipped in the matrix definition.
+sudo: required
+dist: trusty
+
+# Scripts for the default test stage.
+install:
+  - make ci-install
+
+script:
+  - make ci-script
+
+jobs:
+  include:
+    # Deploy stage, running only on tags.
+    - stage: deploy
+      if: tag IS present
+      os: linux
+      services:
+        - docker
+      script:
+        - make packages
+      deploy:
+        provider: releases
+        api_key: $GITHUB_TOKEN
+        file_glob: true
+        file: build/*.tar.gz
+        skip_cleanup: true
+        on:
+          all_branches: true
+      after_deploy:
+        - make docker-push
