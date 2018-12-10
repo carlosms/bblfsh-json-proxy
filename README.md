@@ -4,6 +4,8 @@ A personal project to proxy calls to a gRPC [Babelfish server](https://github.co
 
 Based on [gitbase-web](https://github.com/src-d/gitbase-web) and @dennwc's work on https://github.com/bblfsh/bblfshd/pull/199.
 
+You can find its [Docker image in Docker Hub](https://hub.docker.com/r/carlosms/bblfsh-json-proxy/).
+
 ## Usage
 
 ```
@@ -35,6 +37,11 @@ $ curl localhost:8095/version
 
 ```bash
 $ curl localhost:8095/languages
+```
+<details>
+<summary>Response</summary>
+
+```json
 [
    {
       "name" : "Python",
@@ -116,6 +123,8 @@ $ curl localhost:8095/languages
 ]
 ```
 
+</details>
+
 ## /parse
 
 You can set the following options in the `post` json body:
@@ -124,7 +133,7 @@ You can set the following options in the `post` json body:
 - `filename`:
 - `content`:
 - `filter`: TODO: not implemented yet
-- `mode`: One of "native", "annotated", "semantic". Default is "semantic".
+- `mode`: One of `native`, `annotated`, `semantic`. Default is `semantic`.
 
 ```bash
 $ curl -X POST \
@@ -134,6 +143,12 @@ $ curl -X POST \
     "content": "console.log(\"hello world\");",
     "filename": "hello.js"
   }'
+```
+
+<details>
+<summary>Response</summary>
+
+```json
 {
    "language" : "javascript",
    "uast" : {
@@ -317,3 +332,6 @@ $ curl -X POST \
       }
    }
 }
+```
+
+</details>
